@@ -48,6 +48,22 @@ public class Empleado {
         return null;
     }
 
+    public ResultSet buscarEmpleado(int cedula) {
+
+        try {
+            PreparedStatement sentencia = con.prepareStatement("SELECT * "
+                    + "FROM Empleado "
+                    + "where cedula = ?");
+            sentencia.setInt(1, cedula);
+            ResultSet listado = sentencia.executeQuery();
+
+            return listado;
+        } catch (SQLException ex) {
+            Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }

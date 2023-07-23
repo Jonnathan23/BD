@@ -20,7 +20,6 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
     /**
      * Creates new form VentanaEmpleadosU
      */
-
     public VentanaEmpleadosU() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -107,6 +106,11 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
         });
 
         btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
 
         tbListar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,8 +216,21 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
 
     private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
         ResultSet listado = empleado.agregar();
-        
+
     }//GEN-LAST:event_btListarActionPerformed
+
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        ResultSet listado = empleado.buscarEmpleado(
+                Integer.valueOf(this.txtCI.getText() + ""));
+        
+        try {
+            while(listado.next()){
+                System.out.println(listado.getString("Nombre"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaEmpleadosU.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btBuscarActionPerformed
 
     /**
      * @param args the command line arguments
