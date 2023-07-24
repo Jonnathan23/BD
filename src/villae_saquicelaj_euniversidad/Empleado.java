@@ -27,7 +27,7 @@ public class Empleado {
             JOptionPane.showMessageDialog(null, "Error al ingresar con la base de datos");
             return false;
         }
-    }    
+    }
 
     public ResultSet generarCBContato() {
         try {
@@ -80,25 +80,24 @@ public class Empleado {
         return null;
     }
 
-    public void modificar(int cedula, String nombre, String apellido, String telf, String salario, int tipoContrato) {
+    public void modificar(int cedula, String nombre, String apellido, String telf, String salario) {
         try {
-            PreparedStatement sentencia = con.prepareStatement("UPDATE empleado"
-                    + "SET nombre = '" + "?" + "',"
-                    + "SET apellido = '" + "?" + "',"
-                    + "SET telefono = '" + "?" + "',"
-                    + "SET salario = '" + "?" + "',"
-                    + "SET tipocontrato = '" + "?" + "' "
-                    + "WHERE cedula = ? ");
+            PreparedStatement sentencia = con.prepareStatement("UPDATE empleado SET "
+                    + "nombre = ?,"
+                    + "apellido = ?,"
+                    + "telefono = ?,"
+                    + "salario = ?"                    
+                    + "WHERE cedula = ?");
+
             sentencia.setString(1, nombre);
             sentencia.setString(2, apellido);
             sentencia.setString(3, telf);
-            sentencia.setString(4, salario);
-            sentencia.setInt(5, tipoContrato);
-            sentencia.setInt(6, cedula);
-            
+            sentencia.setString(4, salario);           
+            sentencia.setInt(5, cedula);
+
             sentencia.executeUpdate();
             JOptionPane.showMessageDialog(null, "Se ha modificado correctamente :)");
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Fallo al actualizar los datos :(");

@@ -257,8 +257,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
                 this.txtNombre.getText(),
                 this.txtApellido.getText(),
                 this.txtTelf.getText(),
-                this.txtSalario.getText(),
-                this.cbTipoContrato.getSelectedIndex()
+                this.txtSalario.getText()              
         );
     }//GEN-LAST:event_btModificarActionPerformed
 
