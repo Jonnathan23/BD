@@ -27,25 +27,41 @@ public class Empleado {
             JOptionPane.showMessageDialog(null, "Error al ingresar con la base de datos");
             return false;
         }
-    }
+    }    
 
-    public ResultSet agregar() {
+    public ResultSet generarCBContato() {
         try {
             PreparedStatement sentencia = con.prepareStatement("SELECT * "
-                    + "FROM Revista "
-                    + "where id_Revista = ?");
-            //sentencia.setInt(1, idRevista);
+                    + "FROM tipocontrato ");
             ResultSet listado = sentencia.executeQuery();
 
-            /*while(listado.next())
-            {
-                System.out.println (listado.getString("titulo"));
-            }*/
             return listado;
         } catch (SQLException ex) {
             Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public void agregar(int cedula, String nombre, String apellido, String telf, String salario, int tipoContrato) {
+        try {
+            PreparedStatement sentencia = con.prepareStatement("INSERT INTO empleado "
+                    + "VALUES(?,?,?,?,?,?)");
+            sentencia.setInt(1, cedula);
+            sentencia.setString(2, nombre);
+            sentencia.setString(3, apellido);
+            sentencia.setString(4, telf);
+            sentencia.setString(5, salario);
+            sentencia.setInt(6, tipoContrato);
+
+//            ResultSet listado = sentencia.executeQuery();
+            sentencia.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Se ha agregado con exito");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al agregar al empleado");
+        }
+
     }
 
     public ResultSet buscarEmpleado(int cedula) {
@@ -62,6 +78,31 @@ public class Empleado {
             Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public void modificar(int cedula, String nombre, String apellido, String telf, String salario, int tipoContrato) {
+        try {
+            PreparedStatement sentencia = con.prepareStatement("UPDATE empleado"
+                    + "SET nombre = '" + "?" + "',"
+                    + "SET apellido = '" + "?" + "',"
+                    + "SET telefono = '" + "?" + "',"
+                    + "SET salario = '" + "?" + "',"
+                    + "SET tipocontrato = '" + "?" + "' "
+                    + "WHERE cedula = ? ");
+            sentencia.setString(1, nombre);
+            sentencia.setString(2, apellido);
+            sentencia.setString(3, telf);
+            sentencia.setString(4, salario);
+            sentencia.setInt(5, tipoContrato);
+            sentencia.setInt(6, cedula);
+            
+            sentencia.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Se ha modificado correctamente :)");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Empleado.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Fallo al actualizar los datos :(");
+        }
     }
 
     public void setContrasena(String contrasena) {

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +24,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
     public VentanaEmpleadosU() {
         initComponents();
         this.setLocationRelativeTo(null);
+
     }
 
     /**
@@ -47,7 +49,6 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
         txtApellido = new javax.swing.JTextField();
         txtTelf = new javax.swing.JTextField();
         cbTipoContrato = new javax.swing.JComboBox<>();
-        cbSalario = new javax.swing.JComboBox<>();
         btAgregar = new javax.swing.JButton();
         btEliminar = new javax.swing.JButton();
         btModificar = new javax.swing.JButton();
@@ -55,6 +56,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
         btBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbListar = new javax.swing.JTable();
+        txtSalario = new javax.swing.JTextField();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,10 +85,6 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
 
         jLabel6.setText("Tipo Contrato:");
 
-        cbTipoContrato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cbSalario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btAgregar.setText("Agregar");
         btAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,8 +93,15 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
         });
 
         btEliminar.setText("Eliminar");
+        btEliminar.setEnabled(false);
 
         btModificar.setText("Modificar");
+        btModificar.setEnabled(false);
+        btModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btModificarActionPerformed(evt);
+            }
+        });
 
         btListar.setText("Listar");
         btListar.addActionListener(new java.awt.event.ActionListener() {
@@ -152,7 +157,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
                             .addComponent(txtApellido)
                             .addComponent(txtTelf)
                             .addComponent(cbTipoContrato, 0, 97, Short.MAX_VALUE)
-                            .addComponent(cbSalario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtSalario))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(145, 145, 145)
@@ -197,7 +202,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(cbSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -211,30 +216,69 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarActionPerformed
-
+        empleado.agregar(Integer.valueOf(this.txtCI.getText() + ""),
+                this.txtNombre.getText(),
+                this.txtApellido.getText(),
+                this.txtTelf.getText(),
+                this.txtSalario.getText(),
+                this.cbTipoContrato.getSelectedIndex()
+        );
     }//GEN-LAST:event_btAgregarActionPerformed
 
     private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
-        ResultSet listado = empleado.agregar();
+
 
     }//GEN-LAST:event_btListarActionPerformed
 
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
         ResultSet listado = empleado.buscarEmpleado(
                 Integer.valueOf(this.txtCI.getText() + ""));
-        
         try {
-            while(listado.next()){
-                System.out.println(listado.getString("Nombre"));
+            while(listado.next()){                
+                System.out.println(listado.getString(2));
+                this.txtCI.setText(listado.getString(1));
+                this.txtNombre.setText(listado.getString(2));
+                this.txtApellido.setText(listado.getString(3));
+                this.txtTelf.setText(listado.getString(4));
+                this.txtSalario.setText(listado.getString(5));
             }
+            this.btEliminar.setEnabled(true);
+            this.btModificar.setEnabled(true);
         } catch (SQLException ex) {
             Logger.getLogger(VentanaEmpleadosU.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+
     }//GEN-LAST:event_btBuscarActionPerformed
+
+    private void btModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btModificarActionPerformed
+        // TODO add your handling code here:
+        empleado.modificar(Integer.valueOf(this.txtCI.getText() + ""),
+                this.txtNombre.getText(),
+                this.txtApellido.getText(),
+                this.txtTelf.getText(),
+                this.txtSalario.getText(),
+                this.cbTipoContrato.getSelectedIndex()
+        );
+    }//GEN-LAST:event_btModificarActionPerformed
 
     /**
      * @param args the command line arguments
      */
+  
+
+    public void llenarCBContrato() {
+        ResultSet listado = empleado.generarCBContato();
+
+        try {
+            while (listado.next()) {
+                this.cbTipoContrato.addItem(listado.getString("descripcion"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaEmpleadosU.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public boolean conectar(String contrasena) {
         empleado.setContrasena(contrasena);
         return empleado.conectar();
@@ -250,7 +294,6 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
     private javax.swing.JButton btEliminar;
     private javax.swing.JButton btListar;
     private javax.swing.JButton btModificar;
-    private javax.swing.JComboBox<String> cbSalario;
     private javax.swing.JComboBox<String> cbTipoContrato;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -265,6 +308,7 @@ public class VentanaEmpleadosU extends javax.swing.JFrame {
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCI;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSalario;
     private javax.swing.JTextField txtTelf;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,7 +16,7 @@ public class VentanaCarga extends javax.swing.JFrame {
     /**
      * Creates new form VentanaCarga
      */
-    public VentanaCarga() {        
+    public VentanaCarga() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -91,8 +91,9 @@ public class VentanaCarga extends javax.swing.JFrame {
         if (vEmpleados.conectar(contrasena)) {
             vCarga.setVisible(false);
             vEmpleados.setVisible(true);            
+            vEmpleados.llenarCBContrato();
         } else {
-            this.txtContrasena.setText("");            
+            this.txtContrasena.setText("");
         }
     }//GEN-LAST:event_btIngresarActionPerformed
 
